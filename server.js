@@ -52,6 +52,18 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+app.get("/dashboard", (req, res) => {
+  res.render("dashboard");
+});
+
+//Handles user registration submittion
+app.post("/register", (req, res) => {
+  res.redirect("/dashboard");
+});
+app.post("/logout", (req, res) => {
+  res.redirect("/");
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
