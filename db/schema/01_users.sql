@@ -4,8 +4,8 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS organizations CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS credentials CASCADE;
-DROP TABLE IF EXISTS organization-categories  CASCADE;
-DROP TABLE IF EXISTS organization-credentials CASCADE;
+DROP TABLE IF EXISTS organization_categories  CASCADE;
+DROP TABLE IF EXISTS organization_credentials CASCADE;
 
 
 
@@ -42,14 +42,14 @@ generated_password VARCHAR(255) NOT NULL
 );
 
 -- organization-categories table
-CREATE TABLE organization-categories (
+CREATE TABLE organization_categories (
 id SERIAL PRIMARY KEY NOT NULL,
 organization_id INTEGER REFERENCES organizations(id) ON DELETE CASCADE,
 category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE
 );
 
 -- organization-credentials table
-CREATE TABLE organization-credentials (
+CREATE TABLE organization_credentials (
 id SERIAL PRIMARY KEY NOT NULL,
 credential_id INTEGER REFERENCES credentials(id) ON DELETE CASCADE,
 organization_id INTEGER REFERENCES organizations(id) ON DELETE CASCADE
