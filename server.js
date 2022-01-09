@@ -52,8 +52,14 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+//Handles GET request for /Dashboard
 app.get("/dashboard", (req, res) => {
   res.render("dashboard");
+});
+
+//Handles GET request for /login
+app.get("/login", (req, res) => {
+  res.render("login");
 });
 
 //Handles user registration submittion
