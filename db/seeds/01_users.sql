@@ -56,7 +56,7 @@ INSERT INTO organizations (
     INSERT INTO organizations (
     name, photo_url, domain)
     VALUES (
-    'bamboo', 'img', 'https://www.bamboo.com');
+    'netflix', 'img', 'https://www.netflix.com');
     INSERT INTO organizations (
     name, photo_url, domain)
     VALUES (
@@ -68,7 +68,7 @@ INSERT INTO organizations (
     INSERT INTO organizations (
     name, photo_url, domain)
     VALUES (
-    'reddit', 'img', 'https://www.reddit.com');
+    'amazon', 'img', 'https://www.amazon.com');
 
 -- INSERT INTO CATEGORIES TABLE
 INSERT INTO categories (name)
@@ -101,7 +101,7 @@ INSERT INTO organization_categories (
   VALUES (1,1);
   INSERT INTO organization_categories (
   organization_id, category_id)
-  VALUES (1,2);
+  VALUES (4,2);
   INSERT INTO organization_categories (
   organization_id, category_id)
   VALUES (2,1);
@@ -130,4 +130,4 @@ INSERT INTO organization_credentials (
   VALUES (4,2);
   INSERT INTO organization_credentials (
   organization_id, credential_id)
-  VALUES (1,4);
+  VALUES (4,4);
