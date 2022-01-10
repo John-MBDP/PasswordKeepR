@@ -19,7 +19,7 @@
       href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-        <link
+    <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
@@ -51,20 +51,26 @@
     <title>PasswordKeepR &mdash; Never forget your password again!</title>
   </head>
   <body>
-    <%- include ("./partials/_logout") %>
+    <%- include ("./partials/_login") %>
     <section class="section-cta" id="cta">
       <div class="container">
         <div class="cta">
           <div class="cta-text-box">
-            <h2 class="heading-secondary">Account Configuration</h2>
+            <h2 class="heading-secondary">Login</h2>
             <p class="cta-text">
               Simple, fast, and secured. Never forget your password again.
               PasswordKeepR secures your password all in one place
             </p>
 
-            <form class="cta-form" name="sign-up" netlify>
+            <form
+              action="/login"
+              method="POST"
+              class="cta-form"
+              name="sign-up"
+              netlify
+            >
               <div>
-                <label for="email">Generate Password</label>
+                <label for="email">Email</label>
                 <input
                   id="email"
                   type="email"
@@ -74,27 +80,17 @@
                 />
               </div>
               <div>
-                <label for="email">Change Account Password</label>
+                <label for="email">Password</label>
                 <input
-                  id="email"
-                  type="email"
+                  id="password"
+                  type="password"
                   placeholder="me@example.com"
-                  name="email"
+                  name="password"
                   required
                 />
               </div>
 
-                <div>
-                  <label for="select-where">Filter By:</label>
-                  <select id="select-where" name="select-where" required>
-                    <option value="">Please choose one option:</option>
-                    <option value="friends">Entertainment</option>
-                    <option value="youtube">Shopping</option>
-                    <option value="podcast">Social Media</option>
-                  </select>
-                </div>
-
-                <button class="btn btn--form">Submit</button>
+              <button class="btn btn--form">Submit</button>
 
               <!-- <input type="checkbox" />
                 <input type="number" /> -->
@@ -106,48 +102,6 @@
             aria-label="Woman enjoying food"
           ></div>
         </div>
-      </div>
-    </section>
-
-    <section class="section-meals" id="meals">
-      <div class="container center-text">
-        <span class="subheading">DASHBOARD</span>
-        <h2 class="heading-secondary">PasswordKeepR</h2>
-      </div>
-
-      <div class="container grid grid--3-cols margin-bottom-md">
-        <div class="meal">
-          <img
-            src="img/meals/meal-1.jpg"
-            class="meal-img"
-            alt="Amazon image"
-          />
-          <div class="meal-content">
-            <div class="meal-tags">
-              <span class="tag tag--vegetarian">Amazon</span>
-            </div>
-            <p class="meal-title">Amazon</p>
-            <ul class="meal-attributes">
-              <li class="meal-attribute">
-                <ion-icon class="meal-icon" name="flame-outline"></ion-icon>
-                <span><strong>Username:</strong>Password</span>
-              </li>
-              <li class="meal-attribute">
-                <ion-icon
-                  class="meal-icon"
-                  name="restaurant-outline"
-                ></ion-icon>
-                <span>NutriScore &reg; <strong>74</strong></span>
-              </li>
-              <li class="meal-attribute">
-                <ion-icon class="meal-icon" name="star-outline"></ion-icon>
-                <span><strong>4.9</strong> rating (537)</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        </div>
-
       </div>
     </section>
   </body>
