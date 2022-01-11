@@ -62,6 +62,10 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
+app.get("/password", (req, res) => {
+  res.render("passwordGenerator");
+});
+
 //Handles user registration submittion
 app.post("/register", (req, res) => {
   res.redirect("/dashboard");
