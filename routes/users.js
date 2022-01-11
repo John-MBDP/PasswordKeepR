@@ -59,7 +59,7 @@ module.exports = (db) => {
   router.post("/dashboard", (req, res) => {
     const { name, domain } = req.body;
     const {username, site_password } = req.body;
-    console.log(name,domain,username,site_password)
+    // console.log(name,domain,username,site_password)
     let users = {};
     db.query(`INSERT INTO organizations (name, domain ,photo_url) VALUES ($1, $2, $3) RETURNING *`, [name,domain, "pic"])
 
