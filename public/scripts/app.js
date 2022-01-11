@@ -19,7 +19,6 @@ document.getElementById("generate").addEventListener("click", function () {
   const hasNumber = numbersEl.checked;
   const hasSymbol = symbolsEl.checked;
 
-  console.log("HELLO WORLD", resultEl);
   const passwordGenerate = generatePassword(
     hasLower,
     hasUpper,
