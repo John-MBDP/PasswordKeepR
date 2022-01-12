@@ -1,122 +1,82 @@
-// Client facing scripts here
-// DOM element
 
-const resultEl = document.getElementById("result");
-const lengthEl = document.getElementById("length");
-const uppercaseEl = document.getElementById("uppercase");
-const lowercaseEl = document.getElementById("lowercase");
-const numbersEl = document.getElementById("numbers");
-const symbolsEl = document.getElementById("symbols");
-const generateEl = document.getElementById("generate");
-const clipboard = document.getElementById("clipboard");
+$(document).ready(function () {
+  //rendering all dashboard on the page  // fetching tweets from the http://localhost:8080/dashboard page
+  const loadDashboard = function () {
+    $.ajax({
+      url: "http://localhost:8080/dashboard",
+      method: "GET",
+      dataType: "json",
+      success: (organizations) => {
+        //render dashboard
+        renderOrganizations(organizations);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  };
+  loadDashboard();
 
-console.log(document.getElementById("generate"));
-// console.log(document.getElementById("generate.addEventListener"));
-document.getElementById("generate").addEventListener("click", function () {
-  const length = +lengthEl.value;
-  const hasLower = lowercaseEl.checked;
-  const hasUpper = uppercaseEl.checked;
-  const hasNumber = numbersEl.checked;
-  const hasSymbol = symbolsEl.checked;
+  //rendering all organizations on the page
+  const renderOrganizations = function (organizations) {
+    $(".meal").empty();
+    for (const organization of organizations) {
+      const $organization = $(createOrganizationElement(organization));
+      //brings the organization to the top
+      $(".meal").prepend($organization);
+    }
+  };
 
-  const passwordGenerate = generatePassword(
-    hasLower,
-    hasUpper,
-    hasNumber,
-    hasSymbol,
-    length
-  );
-  console.log(passwordGenerate);
-  resultEl.value = passwordGenerate;
-});
-document.getElementById("copy").addEventListener("click", function () {
-  // clipboard.addEventListener("click", () => {
-  const textarea = document.createElement("copy");
-  const password = resultEl.innerText;
+  //Add an Event Listener and Prevent the Default Behaviour
+  $("#submit-organization").submit(function (event) {
+    event.preventDefault();
+    let data = $(this).serialize();
+    console.log("running");
 
-  if (!password) {
-    return;
-  }
-
-  textarea.value = password;
-  document.body.appendChild(textarea);
-  textarea.select();
-  document.execCommand("copy");
-  textarea.remove();
-  alert("Password copied to clipboard");
-});
-
-// console.log(document.getElementById("generate"));
-document.getElementById("generate").onclick = function () {
-  // const length = +lengthEl.value;
-  // const hasLower = lowercaseEl.checked;
-  // const hasUpper = uppercaseEl.checked;
-  // const hasNumber = numbersEl.checked;
-  // const hasSymbol = symbolsEl.checked;
-  // console.log("HELLO WORLD", resultEl);
-  // resultEl.innerText = generatePassword(
-  //   hasLower,
-  //   hasUpper,
-  //   hasNumber,
-  //   hasSymbol,
-  //   length
-  // );
-};
-
-//Generate password for a user
-function getRandomLower() {
-  return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
-}
-
-function getRandomUpper() {
-  return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
-}
-
-function getRandomNumber() {
-  return +String.fromCharCode(Math.floor(Math.random() * 10) + 48);
-}
-
-function getRandomSymbol() {
-  const symbols = "!@#$%^&*(){}[]=<>/,.";
-  return symbols[Math.floor(Math.random() * symbols.length)];
-}
-const randomFunc = {
-  lower: getRandomLower,
-  upper: getRandomUpper,
-  number: getRandomNumber,
-  symbol: getRandomSymbol,
-};
-
-function generatePassword(lower, upper, number, symbol, length) {
-  let generatedPassword = "";
-  const typesCount = lower + upper + number + symbol;
-  const typesArr = [{ lower }, { upper }, { number }, { symbol }].filter(
-    (item) => Object.values(item)[0]
-  );
-
-  // Doesn't have a selected type
-  if (typesCount === 0) {
-    return "";
-  }
-  // console.log(randomFunc);
-  // create a loop
-  for (let i = 0; i < length; i += typesCount) {
-    typesArr.forEach((type) => {
-      const funcName = Object.keys(type)[0];
-      // generatedPassword += randomFunc[funcName]();
-      if ("lower" === funcName) {
-        generatedPassword += getRandomLower();
-      } else if ("upper" === funcName) {
-        generatedPassword += getRandomUpper();
-      } else if ("number" === funcName) {
-        generatedPassword += getRandomNumber();
-      } else if ("symbol" === funcName) {
-        generatedPassword += getRandomSymbol();
+    $.ajax({
+      url: "/api/users/dashboard",
+      method: "POST",
+      data: data,
+      success: (data) => {
+        const dataHtml = createOrganizationElement(data);
+        $("#org-card").prepend(dataHtml);
+      },
+      error: (err) => {
+        console.log(err);
       }
     });
-  }
+  });
 
-  const finalPassword = generatedPassword.slice(0, length);
+  //creating organization with user and content infor
+  const createOrganizationElement = function (organization) {
+    //Preventing XSS with Escaping(Attacks)
+    const escape = function (str) {
+      let div = document.createElement("div");
+      div.appendChild(document.createTextNode(str));
+      return div.innerHTML;
+    };
 
-  return finalPassword;
-}
+    let $organization = `
+          <div class="meal">
+          <img
+            <img src=${escape(organization.photo_url)} alt="">
+            class="meal-img"
+            alt="Amazon image"
+          />
+          <div class="meal-content">
+            <ul class="meal-attributes">
+              <li class="meal-attribute">
+                <ion-icon class="meal-icon" name="flame-outline"></ion-icon>
+                <span><strong>${escape(organization.username)}: </strong>${escape(organization.site_password)}</span>
+              </li>
+              <li class="meal-attribute">
+                <button class=btn btn--outline" id="edit">Edit</button>
+                <button class=btn btn--outline" id="Delete">Delete</button>
+              </li>
+            </ul>
+          </div>
+          </div>
+              `
+    return $organization;
+  };
+});

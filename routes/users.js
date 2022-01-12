@@ -62,7 +62,6 @@ module.exports = (db) => {
       `INSERT INTO organizations (name, domain ,photo_url) VALUES ($1, $2, $3) RETURNING *`,
       [name, domain, "pic"]
     )
-
       .then((data) => {
         users = data.rows[0];
         return db.query(
@@ -72,7 +71,7 @@ module.exports = (db) => {
       })
       .then((data) => {
         console.log(data.rows[0]);
-        res.json({ users });
+        res.json( data.rows[0] );
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });

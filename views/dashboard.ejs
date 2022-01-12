@@ -53,7 +53,7 @@
         <div class="cta">
           <div class="cta-text-box">
             <h2 class="heading-secondary">Add Organization</h2>
-            <form class="cta-form" action="/api/users/dashboard" method="POST" name="sign-up">
+            <form id="submit-organization" class="cta-form" action="/api/users/dashboard" method="POST" name="sign-up">
               <div>
                 <label for="organization-name">Name</label>
                 <input
@@ -68,8 +68,8 @@
                 <label for="organization-link">Domain</label>
                 <input
                   id="email"
-                  type="email"
-                  placeholder="me@example.com"
+                  type="text"
+                  placeholder="www.example.com"
                   name="domain"
                   required
                 />
@@ -78,8 +78,8 @@
                 <label for="email">Username</label>
                 <input
                   id="email"
-                  type="email"
-                  placeholder="me@example.com"
+                  type="text"
+                  placeholder="Username"
                   name="username"
                   required
                 />
@@ -94,7 +94,7 @@
                   required
                 />
               </div>
-                <button class="btn btn--form">Add</button>
+                <button type="submit" class="btn btn--form" >Add</button>
             </form>
           </div>
 
@@ -150,7 +150,7 @@
         <h2 class="heading-secondary">PasswordKeepR</h2>
       </div>
 
-      <div class="container grid grid--3-cols margin-bottom-md">
+      <div id="org-card" class="container grid grid--3-cols margin-bottom-md">
         <div class="meal">
           <img
             src="img/meals/amazon.png"
@@ -215,5 +215,6 @@
     </section>
 
   </body>
+  <script src="/scripts/app.js"></script>
   <script src="/scripts/passwordgenerator.js"></script>
 </html>
