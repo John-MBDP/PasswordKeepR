@@ -58,20 +58,24 @@ module.exports = (db) => {
     const { username, site_password } = req.body;
     console.log(name, domain, username, site_password);
     let users = {};
-    db.query(
+    return db.query(
       `INSERT INTO organizations (name, domain ,photo_url) VALUES ($1, $2, $3) RETURNING *`,
       [name, domain, "pic"]
     )
       .then((data) => {
-        users = data.rows[0];
+        console.log(data.rows);
+        users["name"] = data.rows[0].name;
+        users["domain"] = data.rows[0].domain;
         return db.query(
           `INSERT INTO credentials (username, site_password, url, generated_password, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
           [username, site_password, "url", "psw", 1]
         );
       })
       .then((data) => {
-        console.log(data.rows[0]);
-        res.json( data.rows[0] );
+        users["username"] = data.rows[0].username;
+        users["site_password"] = data.rows[0].site_password;
+       console.log(users,data.rows[0]);
+        res.json( users );
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -79,7 +83,7 @@ module.exports = (db) => {
   });
 
   // updated data in an existing user
-  router.get("/users/:id", (req, res) => {
+  router.put("/users/:id", (req, res) => {
     const id = parseInt(req.params.id);
     const { name, email, password } = req.body;
     db.query(
@@ -96,7 +100,7 @@ module.exports = (db) => {
   });
 
   // Delete a user
-  router.get("/users/:id", (req, res) => {
+  router.delete("/users/:id", (req, res) => {
     const id = parseInt(req.params.id);
     db.query(`DELETE FROM users WHERE id = $1`, [id])
       .then((data) => {

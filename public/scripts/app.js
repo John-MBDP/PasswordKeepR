@@ -58,17 +58,18 @@ $(document).ready(function () {
 
     let $organization = `
           <div class="meal">
-          <img
-            <img src=${escape(organization.photo_url)} alt="">
-            class="meal-img"
-            alt="Amazon image"
-          />
+            <img src="//logo.clearbit.com/${escape(organization.name)}.com" alt=""/>
+
           <div class="meal-content">
             <ul class="meal-attributes">
               <li class="meal-attribute">
-                <ion-icon class="meal-icon" name="flame-outline"></ion-icon>
-                <span><strong>${escape(organization.username)}: </strong>${escape(organization.site_password)}</span>
+              <ion-icon class="meal-icon" name="flame-outline"></ion-icon>
+              <a href="http://www.${escape(organization.domain)}.com" target="_blank">${escape(organization.name)}</a>
               </li>
+              <li class="meal-attribute">
+              <ion-icon class="meal-icon" name="flame-outline"></ion-icon>
+              <span><strong>${escape(organization.username)}: </strong>${escape(organization.site_password)}</span>
+            </li>
               <li class="meal-attribute">
                 <button class=btn btn--outline" id="edit">Edit</button>
                 <button class=btn btn--outline" id="Delete">Delete</button>
