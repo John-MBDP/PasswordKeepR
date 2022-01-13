@@ -72,7 +72,8 @@ $(document).ready(function () {
             </li>
               <li class="meal-attribute">
                 <button class=btn btn--outline" id="edit">Edit</button>
-                <button class=btn btn--outline" id="Delete">Delete</button>
+                <form method="POST" action="/api/users/dashboard/${escape(organization.id)}" >
+                <button type="submit" class=btn btn--outline" id="Delete">Delete</button></form>
               </li>
             </ul>
           </div>
