@@ -9,43 +9,43 @@ const express = require("express");
 const router = express.Router();
 
 module.exports = (db) => {
-  // get all users in ascennding order by id
-  router.get("/", (req, res) => {
-    db.query(`SELECT * FROM users ORDER BY id ASC;`)
+  // get all organizations of single user in ascennding order by id
+  router.get("/dashboards", (req, res) => {
+    db.query(`SELECT * FROM organizations ORDER BY id ASC LIMIT 6;`)
       .then((data) => {
         const users = data.rows;
         res.json({ users });
-        console.log(users);
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
   });
 
-  // get single user by id
-  router.get("/users/:id", (req, res) => {
+  // get single organization by id
+  router.get("/dashboard/edit/:id", (req, res) => {
     const id = parseInt(req.params.id);
-    db.query(`SELECT * FROM users WHERE id = $1`, [id])
+    return db
+      .query(`SELECT * FROM organizations WHERE id = $1`, [id])
       .then((data) => {
-        console.log(data.rows[0]);
         const users = data.rows[0];
-        res.json({ users });
+        res.render("editOrganization", { users });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
   });
 
-  // Create new user
-  router.get("/users", (req, res) => {
-    const { name, email, password } = req.body;
+  // updated data in an existing user
+  router.post("/edit/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const { name, domain, username, site_password } = req.body;
     db.query(
-      `INSERT INTO users (name, email) VALUES ($1, $2, $3) RETURNING *`,
-      [name, email, password]
+      `UPDATE organizations SET name = $1, domain = $2, username = $3, site_password = $4 WHERE id = $5 RETURNING *`,
+      [name, domain, username, site_password, id]
     )
       .then((data) => {
         const users = data.rows[0];
-        res.json({ users });
+        res.redirect("/dashboard");
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -56,54 +56,14 @@ module.exports = (db) => {
   router.post("/dashboard", (req, res) => {
     const { name, domain } = req.body;
     const { username, site_password } = req.body;
-    console.log(name, domain, username, site_password);
-
-    return db.query(
-      `INSERT INTO organizations (name, domain, username, site_password) VALUES ($1, $2, $3, $4) RETURNING *`,
-      [name, domain, username, site_password]
-    )
-    .then((data) => {
-
-      const users = data.rows[0];
-      console.log("data:",users);
-      res.json( users );
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
-});
-
-  //     .then((data) => {
-  //       console.log(data.rows);
-  //       users["name"] = data.rows[0].name;
-  //       users["domain"] = data.rows[0].domain;
-  //       return db.query(
-  //         `INSERT INTO credentials (username, site_password, url, generated_password, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-  //         [username, site_password, "url", "psw", 1]
-  //       );
-  //     })
-  //     .then((data) => {
-  //       users["username"] = data.rows[0].username;
-  //       users["site_password"] = data.rows[0].site_password;
-  //      console.log(users,data.rows[0]);
-  //       res.json( users );
-  //     })
-  //     .catch((err) => {
-  //       res.status(500).json({ error: err.message });
-  //     });
-  // });
-
-  // updated data in an existing user
-  router.put("/users/:id", (req, res) => {
-    const id = parseInt(req.params.id);
-    const { name, email, password } = req.body;
-    db.query(
-      `UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4`,
-      [name, email, password, id]
-    )
+    return db
+      .query(
+        `INSERT INTO organizations (name, domain, username, site_password) VALUES ($1, $2, $3, $4) RETURNING *`,
+        [name, domain, username, site_password]
+      )
       .then((data) => {
-        const users = data.rows;
-        res.json({ users });
+        const users = data.rows[0];
+        res.json(users);
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -116,7 +76,6 @@ module.exports = (db) => {
     db.query(`DELETE FROM organizations WHERE id = $1`, [id])
       .then((data) => {
         const users = data.rows[0];
-        // res.json({ users });
         res.redirect("/dashboard");
       })
       .catch((err) => {
