@@ -78,11 +78,7 @@ app.post("/logout", (req, res) => {
   res.redirect("/");
 });
 
-app.get("/dashboard/edit", (req, res) => {
-  console.log(req);
-  console.log(req.query);
-  res.end();
-});
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

@@ -1,29 +1,31 @@
-
 $(document).ready(function () {
   //rendering all dashboard on the page  // fetching tweets from the http://localhost:8080/dashboard page
   const loadDashboard = function () {
     $.ajax({
-      url: "http://localhost:8080/dashboard",
+      url: "/api/users/dashboards",
       method: "GET",
       dataType: "json",
       success: (organizations) => {
+        console.log("some:", organizations);
         //render dashboard
-        renderOrganizations(organizations);
+        renderOrganizations(organizations.users);
       },
       error: (err) => {
         console.log(err);
       },
     });
   };
+  console.log("loading dashboard:");
   loadDashboard();
 
   //rendering all organizations on the page
   const renderOrganizations = function (organizations) {
-    $(".meal").empty();
+    $("#org-card").empty();
     for (const organization of organizations) {
-      const $organization = $(createOrganizationElement(organization));
+      const $organization = createOrganizationElement(organization);
+      console.log($organization);
       //brings the organization to the top
-      $(".meal").prepend($organization);
+      $("#org-card").prepend($organization);
     }
   };
 
@@ -43,7 +45,7 @@ $(document).ready(function () {
       },
       error: (err) => {
         console.log(err);
-      }
+      },
     });
   });
 
@@ -58,27 +60,48 @@ $(document).ready(function () {
 
     let $organization = `
           <div class="meal">
-            <img src="//logo.clearbit.com/${escape(organization.name)}.com" alt=""/>
+            <img class="meal-img" src="//logo.clearbit.com/${escape(
+              organization.name
+            )}.com" alt=""/>
 
           <div class="meal-content">
             <ul class="meal-attributes">
               <li class="meal-attribute">
               <ion-icon class="meal-icon" name="flame-outline"></ion-icon>
-              <a href="http://www.${escape(organization.domain)}.com" target="_blank">${escape(organization.name)}</a>
+              <a href="http://www.${escape(
+                organization.domain
+              )}.com" target="_blank">${escape(organization.name)}</a>
               </li>
               <li class="meal-attribute">
               <ion-icon class="meal-icon" name="flame-outline"></ion-icon>
-              <span><strong>${escape(organization.username)}: </strong>${escape(organization.site_password)}</span>
+              <span> <strong data-testid=${organization.id}>${escape(
+      organization.username
+    )}: </strong >
+              <strong data-testid=${organization.id}>${escape(
+      organization.site_password
+    )} </strong >
+               </span>
             </li>
               <li class="meal-attribute">
-                <button class=btn btn--outline" id="edit">Edit</button>
-                <form method="POST" action="/api/users/dashboard/${escape(organization.id)}" >
-                <button type="submit" class=btn btn--outline" id="Delete">Delete</button></form>
+              <form method="GET" action="/api/users/dashboard/edit/${escape(
+                organization.id
+              )}" >
+                <button type="submit" class="btn btn--outline" data-testid=${
+                  organization.id
+                }
+                  id="edit-${escape(organization.id)}">Edit</button></form>
+                <form method="POST" action="/api/users/dashboard/${escape(
+                  organization.id
+                )}" >
+                <button  type="submit" class="btn btn--outline" data-testid=${
+                  organization.id
+                }
+                 id="delete-${escape(organization.id)}">Delete</button></form>
               </li>
             </ul>
           </div>
           </div>
-              `
+              `;
     return $organization;
   };
 });
