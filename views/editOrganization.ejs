@@ -58,6 +58,16 @@
                 <label for="assword">Password</label>
                 <input id="password" type="text" value="<%= users.site_password %>" name="site_password" required />
               </div>
+              <div>
+                <label for="select-where">Category</label>
+                <select name="category" id="select-where" name="select-where" required>
+                  <option value="">Please choose one option:</option>
+                  <option value="entertainement">Entertainment</option>
+                  <option value="banking">Banking</option>
+                  <option value="social_media">Social Media</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
               <button type="submit" class="btn btn--form">Edit</button>
             </form>
           </div>

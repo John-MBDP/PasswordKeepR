@@ -96,8 +96,8 @@
               </div>
               <div>
                 <label for="select-where">Category</label>
-                <select id="select-where" name="select-where" required>
-                  <option value="">Please choose one option:</option>
+                <select name="category" id="cat" required>
+                  <!-- <option value="">Please choose one option:</option> -->
                   <option value="entertainement">Entertainment</option>
                   <option value="banking">Banking</option>
                   <option value="social_media">Social Media</option>
@@ -153,6 +153,31 @@
     </div>
     </div>
     </section>
+
+<!-- Filter section -->
+<section class="section-cta" id="cta">
+  <div class="container">
+    <div class="cta">
+      <div class="cta-text-box">
+        <h2 class="heading-secondary">Filter by:</h2>
+        <form id="filter-form" class="cta-form" action="/api/users/dashboard" method="GET" name="sign-up">
+          <div>
+            <label for="select-where">Category</label>
+            <select id="select-where" name="category"  required>
+              <option value="">Please choose one option:</option>
+              <option value="entertainement">Entertainment</option>
+              <option value="banking">Banking</option>
+              <option value="social_media">Social Media</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <!-- <button type="submit" class="btn btn--form" id="filter-btn">Filter</button> -->
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>
 
     <!-- Dashboard for displaying organizations -->
     <section class="section-meals" id="meals">
