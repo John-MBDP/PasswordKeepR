@@ -1,21 +1,31 @@
 $(document).ready(function () {
   //rendering all dashboard on the page  // fetching tweets from the http://localhost:8080/dashboard page
+
   const loadDashboard = function () {
+    let url = $(location).attr("href");
+    url = url.split("dashboard");
+    if (url.length === 1) {
+      url = "/api/users/dashboards";
+    } else {
+      url = url[url.length - 1];
+      url = url.split("?")[0];
+      url = `/api/users/dashboard/json${url}`;
+    }
+
+    console.log("URL", url);
     $.ajax({
-      url: "/api/users/dashboards",
+      url,
       method: "GET",
       dataType: "json",
       success: (organizations) => {
-        console.log("some:", organizations);
         //render dashboard
         renderOrganizations(organizations.users);
       },
       error: (err) => {
-        console.log(err);
+        console.log("error:", err);
       },
     });
   };
-  console.log("loading dashboard:");
   loadDashboard();
 
   //rendering all organizations on the page
@@ -33,8 +43,6 @@ $(document).ready(function () {
   $("#submit-organization").submit(function (event) {
     event.preventDefault();
     let data = $(this).serialize();
-    console.log("running");
-
     $.ajax({
       url: "/api/users/dashboard",
       method: "POST",
@@ -104,4 +112,13 @@ $(document).ready(function () {
               `;
     return $organization;
   };
+
+  // Filtering category wise
+
+  let filterForm = $("#filter-form");
+  $("#select-where").change(function () {
+    let value = $(this).val();
+    filterForm.attr("action", `/api/users/dashboard/${value}`);
+    filterForm.submit();
+  });
 });
